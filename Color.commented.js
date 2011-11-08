@@ -63,7 +63,7 @@
 	var leadHex = /^#/;
 
 	var matchHSL = /^hsla?\((\d{0,3}),\s*(\d{1,3})%,\s*(\d{1,3})%(,\s*[01](\.\d+)*)\)$/;
-	var matchRGB = /^rgba?\((\d{1,3}%?),\s*(\d{1,3}%?),\s*(\d{1,3}%?)(,\s*[01]?\.?\d*)?\)$/;
+	var matchRGB = /^rgba?\((\d{1,3}%?),\s*(\d{1,3}%?),\s*(\d{1,3}%?),\s*([01]?\.?\d*)?\)$/;
 
 	/**
 	* Color instance - get, update and output a Color between structures.
