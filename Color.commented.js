@@ -170,14 +170,14 @@
 				this.red(perc2value(parts[1]));
 				this.green(perc2value(parts[2]));
 				this.blue(perc2value(parts[3]));
-				this.alpha(parseInt(parts[4]) || 1);
+				this.alpha(parseFloat(parts[4]) || 1);
 				return this.value();
 			case isHSL.test(value) :  // http://www.w3.org/TR/css3-color/#hsl-color
 				var parts = value.match(matchHSL);
 				this.hue(parseInt(parts[1]));
 				this.saturation(parseInt(parts[2]));
 				this.lightness(parseInt(parts[3]));
-				this.alpha(parseInt(parts[4]) || 1);
+				this.alpha(parseFloat(parts[4]) || 1);
 				return this.value();
 			case (namedColors.hasOwnProperty(value)) :
 				value = namedColors[value];
