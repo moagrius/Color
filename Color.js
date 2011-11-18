@@ -233,7 +233,7 @@
 		var r = 0;
 		var g = 0;
 		var b = 0;
-		var i = absround(h * 6);
+		var i = Math.floor(h * 6);
 		var f = h * 6 - i;
 		var p = v * (1 - s);
 		var q = v * (1 - f * s);
@@ -528,6 +528,6 @@
 	};
 		
 	Color.Events = Events;
-	return this.Color = Color;
+	return this.Color = window.Color = Color;
 	
 })();
