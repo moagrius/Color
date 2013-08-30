@@ -32,3 +32,8 @@ color.brightness(20);
 element.style.backgroundColor = color;
 console.log(color.getRGB());
 console.log(color.saturation());</pre>
+<p>The component is equipped to handle the vagaries of the DOM, and should be able to parse any CSS color output automatically.</p>
+<p>A number of other convenience methods exist, such as <a target="_blank" href="http://moagrius.github.io/Color/Color.html#interpolate">.interpolate</a>,
+which smoothly blends one color to another, and <a target="_blank" href="http://moagrius.github.io/Color/Color.html#bind">.bind</a> that links a Color
+instance with an object (e.g., a DOM element's style property, like background-color or (text) color), so that when the Color instance is mutated,
+the bound object property will also be updated.</p>
