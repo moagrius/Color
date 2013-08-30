@@ -1,6 +1,6 @@
 <h1>Color.js</h1>
 <h2>abstract Color management class written in JavaScript</h2>
-<p><a href="#" target="_blank">Documentation</a></p>
+<p><a href="http://moagrius.github.io/Color/Color.html" target="_blank">Documentation</a></p>
 <p>This class allows a Color to be created in any format (RGB, hex, decimal, HSL, HSV, CSS, etc), while allowing any component to be manipulated.</p>
 <ul>
 <li>new Color();	</li>
