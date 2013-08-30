@@ -1,0 +1,4042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Color</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Class: Color</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+    Color
+    </h2>
+    
+        <div class="class-description">Instances of the Color class serve as abstract reprentations of the color itself, and don't need to be 
+transformed from one format to another.  A single Color instance can have any component (red, green, blue, hue, saturation, lightness, brightness,
+alpha) updated regardless of the source.  Further, all other components will be normalized automatically.  If a Color is instanced using a hex value,
+it can have it's lightness component updated directly despite lightness being a HSL component.  Further, the same color instance can output it's
+component values in any format without any extra conversions.  Conversion methods (getRGB, getHex) are provided just as helpers, and don't perform any
+actual transformations.  They are not required for use or translation.  The standard component parts are available as instance methods - passing a value
+argument to set, and each return the value as well (with or without setter arguments).  These components perform transformations and dispatch events, and
+can be used without any sugar to manage the Color instance.
+Component methods include:
+.red()
+.green()
+.blue()
+.hue()
+.saturation()
+.lightness()
+.brightness()
+.hex()
+.decimal()
+</ul></div>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="Color"><span class="type-signature"></span>new Color<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Color instance - get, update and output a Color between structures.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">mixed</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Accepts any valid CSS color value e.g., #FF9900, rgb(255, 153, 0), rgba(100%, 40%, 0%, 0.8);
+a hash with properties mapped to the Color instance e.g., red, green, saturation, brightness;
+another Color instance; a numeric color value; a named CSS color</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line116">line 116</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// instancing...
+new Color();
+new Color('#FF9900');
+new Color(element.style.color);
+new Color('pink');
+new Color(123456);
+new Color({ red : 255, green : 100, blue : 0 });
+new Color(colorInstance);
+// usage...
+var color = new Color('#FF9900');
+color.brightness(20);
+element.style.backgroundColor = color;
+console.log(color.getRGB());
+console.log(color.saturation());</code></pre>
+
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="output"><span class="type-signature"></span>output<span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Sets the format used by the native toString method
+Color.HEX outputs #FF9900
+Color.RGB outputs rgb(255, 153, 0)
+Color.PRGB outputs rgb(100%, 50%, 0)
+Color.RGBA outputs rgba(255, 153, 0, 0.5)
+Color.PRGBA outputs rgba(100%, 50%, 0, 0.5)
+Color.HSL outputs hsl(360, 100%, 80%)
+Color.HSLA outputs hsla(360, 100%, 80%, 0.5)
+    </div>
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line692">line 692</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color('#FF9900');
+color.format = Color.RGB;
+element.style.backgroundColor = color;
+element.style.color = color;</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="bind"><span class="type-signature">&lt;static> </span>bind<span class="signature">(object, property)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        [static] Returns a Color instance bound to an object's property, set to the value of the property
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object containing the property to update</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>property</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Name of the property to update</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line866">line 866</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Color
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var color = Color.bind(someElement.style, 'backgroundColor');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="random"><span class="type-signature">&lt;static> </span>random<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        [static] Returns a Color instance of a random color
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line852">line 852</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Color
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var gray = Color.interpolate('#FFFFFF', '#000000', 0.5);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="alpha"><span class="type-signature"></span>alpha<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the opacity value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 1 opacity component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line535">line 535</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.alpha(0.5);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="bind"><span class="type-signature"></span>bind<span class="signature">(object, property)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Binds the color to an object's property - whenever the Color is updated, the property will be set to the value of the Color instance's toString method
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object containing the property to update</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>property</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Name of the property to update</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line837">line 837</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var color = new Color('#FF9900');
+color.bind(someElement.style, 'backgroundColor');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="blue"><span class="type-signature"></span>blue<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the blue component value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 255 blue component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line470">line 470</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.blue(125);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="brightness"><span class="type-signature"></span>brightness<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the brightness component value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 100 brightness component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line522">line 522</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.brightness(80);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="broadcast"><span class="type-signature"></span>broadcast<span class="signature">(type, params)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Event type to dispatch</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Array of arguments to pass to listener</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line787">line 787</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var color = new Color();
+var handler = function(a, b){
+  console.log('a=' + a, 'b=' + b);
+});
+color.subscribe('arbitraryEvent', handler);
+color.broadcast('arbitraryEvent', ['A', 'B']);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="clone"><span class="type-signature"></span>clone<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Create a duplicate of this Color instance
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line217">line 217</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Color
+</div>
+
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="copy"><span class="type-signature"></span>copy<span class="signature">(color)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Copy values from another Color instance
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Color.html">Color</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Color instance to copy values from</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line227">line 227</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    this
+</div>
+
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="decimal"><span class="type-signature"></span>decimal<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the decimal value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 (black) to 16777215 (white) - the decimal value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line419">line 419</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.decimal(123456);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="format"><span class="type-signature"></span>format<span class="signature">(string)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a tokenized string from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>string</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The string to return, with tokens expressed as %token% that are replaced with component values.  Tokens are as follows:
+r : red
+g : green
+b : blue
+h : hue
+s : saturation
+l : lightness
+v : brightness
+a : alpha
+x : hex
+i : value</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line658">line 658</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color('#FF9900');
+console.log(color.format('red=%r%, green=%g%, blue=%b%));</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getHex"><span class="type-signature"></span>getHex<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a CSS-formatted hex string [e.g., #FF9900] from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line563">line 563</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+element.style.backgroundColor = color.getHex();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getHSL"><span class="type-signature"></span>getHSL<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a CSS-formatted HSL string [e.g., hsl(360, 100%, 100%)] from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line622">line 622</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+element.style.backgroundColor = color.getHSL();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getHSLA"><span class="type-signature"></span>getHSLA<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a CSS-formatted HSLA string [e.g., hsl(360, 100%, 100%, 0.5)] from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line634">line 634</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+element.style.backgroundColor = color.getHSLA();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getPRGB"><span class="type-signature"></span>getPRGB<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a CSS-formatted percentile RGB string [e.g., rgb(100%, 50%, 0)] from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line586">line 586</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+element.style.backgroundColor = color.getPRGB();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getPRGBA"><span class="type-signature"></span>getPRGBA<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a CSS-formatted percentile RGBA string [e.g., rgba(100%, 50%, 0%, 0.5)] from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line610">line 610</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+element.style.backgroundColor = color.getPRGBA();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getRGB"><span class="type-signature"></span>getRGB<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a CSS-formatted RGB string [e.g., rgb(255, 153, 0)] from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line574">line 574</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+element.style.backgroundColor = color.getRGB();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getRGBA"><span class="type-signature"></span>getRGBA<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a CSS-formatted RGBA string [e.g., rgba(255, 153, 0, 0.5)] from the Color's component values
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line598">line 598</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+element.style.backgroundColor = color.getRGBA();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="green"><span class="type-signature"></span>green<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the green component value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 255 green component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line458">line 458</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.green(125);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="hex"><span class="type-signature"></span>hex<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the hex value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Hex value to be set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line433">line 433</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    String
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.hex('#FF9900');
+color.hex('#CCC');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="hue"><span class="type-signature"></span>hue<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the hue component value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 360 hue component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line483">line 483</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.hue(280);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="interpolate"><span class="type-signature"></span>interpolate<span class="signature">(destination, factor)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        sets the invoking Color instance component values to a point between the original value and the destination Color instance component value, multiplied by the factor
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>destination</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Color.html">Color</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Color instance to serve as the termination of the interpolation</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0-1, where 0 is the origin Color and 1 is the destination Color, and 0.5 is halfway between.  This method will "blend" the colors.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line271">line 271</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    this
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var orange = new Color('#FF9900');
+var white = new Color('#FFFFFF');
+orange.interpolate(white, 0.5);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="lightness"><span class="type-signature"></span>lightness<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the lightness component value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 100 lightness component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line509">line 509</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.lightness(80);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Convert mixed variable to Color component properties, and adopt those properties.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">mixed</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Accepts any valid CSS color value e.g., #FF9900, rgb(255, 153, 0), rgba(100%, 40%, 0%, 0.8);
+a hash with properties mapped to the Color instance e.g., red, green, saturation, brightness;
+another Color instance; a numeric color value; a named CSS color</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line158">line 158</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    this
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.parse();
+color.parse('#FF9900');
+color.parse(element.style.color);
+color.parse('pink');
+color.parse(123456);
+color.parse({ red : 255, green : 100, blue : 0 });
+color.parse(colorInstance);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="red"><span class="type-signature"></span>red<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the red component value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 255 red component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line446">line 446</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.red(125);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="saturation"><span class="type-signature"></span>saturation<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set the saturation component value of the color, updates all other components, and dispatches Event.UPDATED
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">0 - 100 saturation component value to set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line496">line 496</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.saturation(280);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(key, value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Set a color component value
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Name of the color component to defined, or a hash of key:value pairs, or a single numeric value</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Value of the color component to be set</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line243">line 243</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    this
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var color = new Color();
+color.set('lightness', 100);
+color.set({ red : 255, green : 100 });
+color.set(123456);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe<span class="signature">(type, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Event type to listen for</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">listener to register to the event</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line741">line 741</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var color = new Color();
+color.subscribe(Color.Event.UPDATED, function(){
+  alert('this color has been updated');
+});
+color.red(255);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="tween"><span class="type-signature"></span>tween<span class="signature">(duration, color)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Blends the color from it's current state to the target Color over the duration
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">duration of tween in millisecond</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Color.html">Color</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">destination color</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line808">line 808</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    number
+</div>
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var color = new Color('#FF9900');
+color.tween(2000, '#FFFFFF');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unsubscribe"><span class="type-signature"></span>unsubscribe<span class="signature">(type, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Event type to remove the listener from</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">listener to unregister from the event</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Color.js.html">Color.js</a>, <a href="Color.js.html#line762">line 762</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var color = new Color();
+var handler = function(){
+  console.log('this color has been updated');
+});
+color.subscribe(Color.Event.UPDATED, handler);
+color.red(255);
+color.unsubscribe(Color.Event.UPDATED, handler);
+color.red(0);</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Color.html">Color</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Aug 29 2013 23:42:57 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
