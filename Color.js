@@ -721,6 +721,21 @@ var Color = (function(window){
 		};
 		return this.getHex();
 	};
+	
+	/**
+	* Returns the ideal foreground color (black or white) for text with the Color as background 
+	* @function
+	* @returns Color
+	* @example
+	* var color = new Color();
+	* element.style.backgroundColor = color.getRGB();
+	* element.style.color = color.foreground().getRGB();
+	*/
+	Color.prototype.foreground = function(){
+		var v = Math.sqrt(this._red*this._red*0.241+this._green*this._green*0.691+this._blue*this._blue*0.068);
+		if(v>130) return new Color("black");
+        	else return new Color("white");
+	};
 
 	// Event Management
 	Color.prototype._listeners = null;
