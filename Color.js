@@ -732,8 +732,7 @@ var Color = (function(window){
 	* element.style.color = color.foreground().getRGB();
 	*/
 	Color.prototype.foreground = function(){
-		var v = Math.sqrt(this._red*this._red*0.241+this._green*this._green*0.691+this._blue*this._blue*0.068);
-		if(v>130) return new Color("black");
+		if(this._lightness>50) return new Color("black");
 		return new Color("white");
 	};
 
