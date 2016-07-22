@@ -6,7 +6,8 @@ var Color = (function(window){
 		HSV_UPDATED : 'HSVUpdated',
 		HEX_UPDATED : 'HexUpdated',
 		INT_UPDATED : 'IntUpdated',
-		UPDATED : 'updated'
+		UPDATED : 'updated',
+		PARSED: 'parsed'
 	};
 
 	var namedColors = {
@@ -50,7 +51,7 @@ var Color = (function(window){
 	};
 
 	var p2v = function(p){
-		return isPercent.test(p) ? absround(parseInt(p) * 2.55) : p;
+		return isPercent.test(p) ? absround(parseInt(p) * 2.55) : parseInt(p);
 	};
 	
 	var isNamedColor = function(key){
@@ -163,44 +164,50 @@ var Color = (function(window){
 			case isFinite(value) :
 				this.decimal(value);
 				this.output = Color.INT;
+				this.broadcast(Events.PARSED);
 				return this;
 			case (value instanceof Color) :
 				this.copy(value);
+				this.broadcast(Events.PARSED);
 				return this;
 			default : 
 				switch(typeof value) {
 					case 'object' :
 						this.set(value);
+						this.broadcast(Events.PARSED);
 						return this;
 					case 'string' :
+						  value = namedColors.hasOwnProperty(value)?namedColors[value]:value;
 						switch(true){
-							case (namedColors.hasOwnProperty(value)) :
-								value = namedColors[value];
-								var stripped = value.replace(leadHex, '');
-								this.decimal(parseInt(stripped, 16));
-								return this;
 							case isHex.test(value) :
 								var stripped = value.replace(leadHex, '');
 								if(stripped.length == 3) {
 									stripped = stripped.replace(hexBit, '$1$1');
 								};
 								this.decimal(parseInt(stripped, 16));
+								this.broadcast(Events.PARSED);
 								return this;
 							case isRGB.test(value) :
 								var parts = value.match(matchRGB);
 								this.red(p2v(parts[1]));
 								this.green(p2v(parts[2]));
 								this.blue(p2v(parts[3]));
-								this.alpha(parseFloat(parts[5]) || 1);
+								var alpha = parseFloat(parts[5]);
+								if (isNaN(alpha)) alpha = 1;
+								this.alpha(alpha);
 								this.output = (isPercent.test(parts[1]) ? 2 : 1) + (parts[5] ? 2 : 0);
+								this.broadcast(Events.PARSED);
 								return this;
 							case isHSL.test(value) :  
 								var parts = value.match(matchHSL);
 								this.hue(parseInt(parts[1]));
 								this.saturation(parseInt(parts[2]));
 								this.lightness(parseInt(parts[3]));
-								this.alpha(parseFloat(parts[5]) || 1);
-								this.output = parts[5] ? 6: 5; 
+								var alpha = parseFloat(parts[5]);
+								if (isNaN(alpha)) alpha = 1;
+								this.alpha(alpha);
+								this.output = parts[5] ? 6: 5;
+								this.broadcast(Events.PARSED);
 								return this;
 						};
 				};		
@@ -215,7 +222,7 @@ var Color = (function(window){
 	* @returns Color
 	*/
 	Color.prototype.clone = function(){
-		return new Color(this.decimal());
+		return new Color(this.decimal()).alpha(this.alpha());
 	};
 
 	/**
@@ -225,7 +232,7 @@ var Color = (function(window){
 	* @returns this
 	*/
 	Color.prototype.copy = function(color){
-		return this.set(color.decimal());
+		return this.set(color.decimal()).alpha(color.alpha());
 	};
 
 	/**
@@ -546,7 +553,7 @@ var Color = (function(window){
 						this.broadcast(event);
 					};
 				};
-				this.broadcast(Event.UPDATED);
+				this.broadcast(Events.UPDATED);
 			};
 		};
 		return this[prop];
