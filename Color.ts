@@ -1,6 +1,6 @@
-var Color = (function(window){
+class Color{
 
-	var Events = {
+	static Events = {
 		RGB_UPDATED : 'RGBUpdated',
 		HSL_UPDATED : 'HSLUpdated',
 		HSV_UPDATED : 'HSVUpdated',
@@ -10,7 +10,7 @@ var Color = (function(window){
 		PARSED: 'parsed'
 	};
 
-	var namedColors = {
+	static namedColors = {
 		'transparent':'rgba(0, 0, 0, 0)','aliceblue':'#F0F8FF','antiquewhite':'#FAEBD7','aqua':'#00FFFF','aquamarine':'#7FFFD4',
 		'azure':'#F0FFFF','beige':'#F5F5DC','bisque':'#FFE4C4','black':'#000000','blanchedalmond':'#FFEBCD','blue':'#0000FF','blueviolet':'#8A2BE2',
 		'brown':'#A52A2A','burlywood':'#DEB887','cadetblue':'#5F9EA0','chartreuse':'#7FFF00','chocolate':'#D2691E','coral':'#FF7F50',
@@ -37,11 +37,11 @@ var Color = (function(window){
 	};
 
 	// helpers
-	var absround = function(number){
+	static absround(number: number){
 		return (0.5 + number) << 0;
 	};
 
-	var hue2rgb = function(a, b, c) {  // http://www.w3.org/TR/css3-color/#hsl-color
+	static hue2rgb(a: number, b: number, c: number) {  // http://www.w3.org/TR/css3-color/#hsl-color
 		if(c < 0) c += 1;
 		if(c > 1) c -= 1;
 		if(c < 1/6) return a + (b - a) * 6 * c;
@@ -50,28 +50,28 @@ var Color = (function(window){
 		return a;
 	};
 
-	var p2v = function(p){
-		return isPercent.test(p) ? absround(parseInt(p) * 2.55) : parseInt(p);
+	static p2v(p: string){
+		return Color.isPercent.test(p) ? Color.absround(parseInt(p) * 2.55) : parseInt(p);
 	};
 	
-	var isNamedColor = function(key){
+	static isNamedColor(key: any): string | null{
 		var lc = ('' + key).toLowerCase();
-		return namedColors.hasOwnProperty(lc)
-			? namedColors[lc]
+		return Color.namedColors.hasOwnProperty(lc)
+			? (Color.namedColors as any)[lc]
 			: null;
 	};
 
 	// patterns
-	var isHex = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
-	var isHSL = /^hsla?\((\d{1,3}?),\s*(\d{1,3}%),\s*(\d{1,3}%)(,\s*[01]?\.?\d*)?\)$/;
-	var isRGB = /^rgba?\((\d{1,3}%?),\s*(\d{1,3}%?),\s*(\d{1,3}%?)(,\s*[01]?\.?\d*)?\)$/;
-	var isPercent = /^\d+(\.\d+)*%$/;
+	static isHex = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
+	static isHSL = /^hsla?\((\d{1,3}?),\s*(\d{1,3}%),\s*(\d{1,3}%)(,\s*[01]?\.?\d*)?\)$/;
+	static isRGB = /^rgba?\((\d{1,3}%?),\s*(\d{1,3}%?),\s*(\d{1,3}%?)(,\s*[01]?\.?\d*)?\)$/;
+	static isPercent = /^\d+(\.\d+)*%$/;
 
-	var hexBit = /([0-9a-f])/gi;
-	var leadHex = /^#/;
+	static hexBit = /([0-9a-f])/gi;
+	static leadHex = /^#/;
 
-	var matchHSL = /^hsla?\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%(,\s*([01]?\.?\d*))?\)$/;
-	var matchRGB = /^rgba?\((\d{1,3}%?),\s*(\d{1,3}%?),\s*(\d{1,3}%?)(,\s*([01]?\.?\d*))?\)$/;
+	static matchHSL = /^hsla?\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%(,\s*([01]?\.?\d*))?\)$/;
+	static matchRGB = /^rgba?\((\d{1,3}%?),\s*(\d{1,3}%?),\s*(\d{1,3}%?)(,\s*([01]?\.?\d*))?\)$/;
 
 	/**
 	* Color instance - get, update and output a Color between structures.
@@ -114,30 +114,31 @@ var Color = (function(window){
 	* console.log(color.getRGB());
 	* console.log(color.saturation());
 	*/
-	function Color(value){
+	//TODO: Change type of argument when bug #15906 is fixed
+	constructor(value?: any){
 
 		this._listeners = {};
 
-		this.subscribe(Events.RGB_UPDATED, this._RGBUpdated);
-		this.subscribe(Events.HEX_UPDATED, this._HEXUpdated);
-		this.subscribe(Events.HSL_UPDATED, this._HSLUpdated);
-		this.subscribe(Events.HSV_UPDATED, this._HSVUpdated);
-		this.subscribe(Events.INT_UPDATED, this._INTUpdated);
+		this.subscribe(Color.Events.RGB_UPDATED, this._RGBUpdated);
+		this.subscribe(Color.Events.HEX_UPDATED, this._HEXUpdated);
+		this.subscribe(Color.Events.HSL_UPDATED, this._HSLUpdated);
+		this.subscribe(Color.Events.HSV_UPDATED, this._HSVUpdated);
+		this.subscribe(Color.Events.INT_UPDATED, this._INTUpdated);
 		
 		this.parse(value);
 
 	};
 
-	Color.prototype._decimal = 0;  // 0 - 16777215
-	Color.prototype._hex = '#000000';  // #000000 - #FFFFFF
-	Color.prototype._red = 0;  // 0 - 255
-	Color.prototype._green = 0;  // 0 - 255
-	Color.prototype._blue = 0;  // 0 - 255
-	Color.prototype._hue = 0;  // 0 - 360
-	Color.prototype._saturation = 0;  // 0 - 100
-	Color.prototype._lightness = 0;  // 0 - 100
-	Color.prototype._brightness = 0;  // 0 - 100
-	Color.prototype._alpha = 1;  // 0 - 1
+	_decimal = 0;  // 0 - 16777215
+	_hex = '#000000';  // #000000 - #FFFFFF
+	_red = 0;  // 0 - 255
+	_green = 0;  // 0 - 255
+	_blue = 0;  // 0 - 255
+	_hue = 0;  // 0 - 360
+	_saturation = 0;  // 0 - 100
+	_lightness = 0;  // 0 - 100
+	_brightness = 0;  // 0 - 100
+	_alpha = 1;  // 0 - 1
 	
 	/**
 	* Convert mixed variable to Color component properties, and adopt those properties.
@@ -156,7 +157,8 @@ var Color = (function(window){
 	* color.parse({ red : 255, green : 100, blue : 0 });
 	* color.parse(colorInstance);
 	*/
-	Color.prototype.parse = function(value){
+	//TODO: Change type of argument when bug #15906 is fixed
+	parse(value: any) : this{
 		if(typeof value == 'undefined'){
 			return this;
 		};
@@ -164,42 +166,43 @@ var Color = (function(window){
 			case isFinite(value) :
 				this.decimal(value);
 				this.output = Color.INT;
-				this.broadcast(Events.PARSED);
+				this.broadcast(Color.Events.PARSED);
 				return this;
 			case (value instanceof Color) :
 				this.copy(value);
-				this.broadcast(Events.PARSED);
+				this.broadcast(Color.Events.PARSED);
 				return this;
 			default : 
 				switch(typeof value) {
 					case 'object' :
 						this.set(value);
-						this.broadcast(Events.PARSED);
+						this.broadcast(Color.Events.PARSED);
 						return this;
 					case 'string' :
-						  value = namedColors.hasOwnProperty(value)?namedColors[value]:value;
+						  //TODO: use "in" operator when bug #15906 is fixed
+						  value = Color.namedColors.hasOwnProperty(value)?(Color.namedColors as any)[value]:value;
 						switch(true){
-							case isHex.test(value) :
-								var stripped = value.replace(leadHex, '');
+							case Color.isHex.test(value) :
+								var stripped = value.replace(Color.leadHex, '');
 								if(stripped.length == 3) {
-									stripped = stripped.replace(hexBit, '$1$1');
+									stripped = stripped.replace(Color.hexBit, '$1$1');
 								};
 								this.decimal(parseInt(stripped, 16));
-								this.broadcast(Events.PARSED);
+								this.broadcast(Color.Events.PARSED);
 								return this;
-							case isRGB.test(value) :
-								var parts = value.match(matchRGB);
-								this.red(p2v(parts[1]));
-								this.green(p2v(parts[2]));
-								this.blue(p2v(parts[3]));
+							case Color.isRGB.test(value) :
+								var parts = value.match(Color.matchRGB);
+								this.red(Color.p2v(parts[1]));
+								this.green(Color.p2v(parts[2]));
+								this.blue(Color.p2v(parts[3]));
 								var alpha = parseFloat(parts[5]);
 								if (isNaN(alpha)) alpha = 1;
 								this.alpha(alpha);
-								this.output = (isPercent.test(parts[1]) ? 2 : 1) + (parts[5] ? 2 : 0);
-								this.broadcast(Events.PARSED);
+								this.output = (Color.isPercent.test(parts[1]) ? 2 : 1) + (parts[5] ? 2 : 0);
+								this.broadcast(Color.Events.PARSED);
 								return this;
-							case isHSL.test(value) :  
-								var parts = value.match(matchHSL);
+							case Color.isHSL.test(value) :  
+								var parts = value.match(Color.matchHSL);
 								this.hue(parseInt(parts[1]));
 								this.saturation(parseInt(parts[2]));
 								this.lightness(parseInt(parts[3]));
@@ -207,7 +210,7 @@ var Color = (function(window){
 								if (isNaN(alpha)) alpha = 1;
 								this.alpha(alpha);
 								this.output = parts[5] ? 6: 5;
-								this.broadcast(Events.PARSED);
+								this.broadcast(Color.Events.PARSED);
 								return this;
 						};
 				};		
@@ -221,8 +224,10 @@ var Color = (function(window){
 	* @function
 	* @returns Color
 	*/
-	Color.prototype.clone = function(){
-		return new Color(this.decimal()).alpha(this.alpha());
+	clone(): Color{
+		var c = new Color(this.decimal());
+		c.alpha(this.alpha());
+		return c;
 	};
 
 	/**
@@ -231,8 +236,9 @@ var Color = (function(window){
 	* @param {Color} color Color instance to copy values from
 	* @returns this
 	*/
-	Color.prototype.copy = function(color){
-		return this.set(color.decimal()).alpha(color.alpha());
+	copy(color: Color): this{
+		this.set(color.decimal()).alpha(color.alpha())
+		return this;
 	};
 
 	/**
@@ -247,19 +253,19 @@ var Color = (function(window){
 	* color.set({ red : 255, green : 100 });
 	* color.set(123456);
 	*/
-	Color.prototype.set = function(key, value){
+	set(key: string | object | number, value?: string | number){
 		if(arguments.length == 1){
 			if(typeof key == 'object'){
 				for(var p in key){
-					if(typeof this[p] == 'function'){
-						this[p](key[p]);					
+					if(typeof (this as any)[p] == 'function'){
+						(this as any)[p]((key as any)[p]);					
 					};
 				};
-			} else if(isFinite(key)){
-				this.decimal(key);
+			} else if(isFinite(key as number)){
+				this.decimal(key as number);
 			}
-		} else if(typeof this[key] == 'function'){
-			this[key](value);
+		} else if(typeof (this as any)[key as any] == 'function'){
+			(this as any)[key as any](value);
 		};
 		return this;
 	};
@@ -275,20 +281,20 @@ var Color = (function(window){
 	* var white = new Color('#FFFFFF');
 	* orange.interpolate(white, 0.5);
 	*/
-	Color.prototype.interpolate = function(destination, factor){
+	interpolate(destination: Color, factor: number): this{
 		if(!(destination instanceof Color)){
 			destination = new Color(destination);
 		};
-		this._red = absround( +(this._red) + (destination._red - this._red) * factor );
-		this._green = absround( +(this._green) + (destination._green - this._green) * factor );
-		this._blue = absround( +(this._blue) + (destination._blue - this._blue) * factor );
-		this._alpha = absround( +(this._alpha) + (destination._alpha - this._alpha) * factor );
-		this.broadcast(Events.RGB_UPDATED);
-		this.broadcast(Events.UPDATED);
+		this._red = Color.absround( +(this._red) + (destination._red - this._red) * factor );
+		this._green = Color.absround( +(this._green) + (destination._green - this._green) * factor );
+		this._blue = Color.absround( +(this._blue) + (destination._blue - this._blue) * factor );
+		this._alpha = Color.absround( +(this._alpha) + (destination._alpha - this._alpha) * factor );
+		this.broadcast(Color.Events.RGB_UPDATED);
+		this.broadcast(Color.Events.UPDATED);
 		return this;
 	};
 
-	Color.prototype._RGB2HSL = function(){
+	_RGB2HSL(){
 
 		var r = this._red / 255;
 		var g = this._green / 255;
@@ -302,8 +308,8 @@ var Color = (function(window){
 		if(max == min) {
 			this._hue = 0;
 			this._saturation = 0;
-			this._lightness = absround(l * 100);
-			this._brightness = absround(v * 100);
+			this._lightness = Color.absround(l * 100);
+			this._brightness = Color.absround(v * 100);
 			return;
 		};
 
@@ -315,22 +321,22 @@ var Color = (function(window){
 			 ? ((b - r) / d + 2)
 			 : ((r - g) / d + 4)) / 6;
 
-		this._hue = absround(h * 360);
-		this._saturation = absround(s * 100);
-		this._lightness = absround(l * 100);
-		this._brightness = absround(v * 100);
+		this._hue = Color.absround(h * 360);
+		this._saturation = Color.absround(s * 100);
+		this._lightness = Color.absround(l * 100);
+		this._brightness = Color.absround(v * 100);
 	};
-	Color.prototype._HSL2RGB = function(){
+	_HSL2RGB(){
 		var h = this._hue / 360;
 		var s = this._saturation / 100;
 		var l = this._lightness / 100;
 		var q = l < 0.5	? l * (1 + s) : (l + s - l * s);
 		var p = 2 * l - q;
-		this._red = absround(hue2rgb(p, q, h + 1/3) * 255);
-		this._green = absround(hue2rgb(p, q, h) * 255);
-		this._blue = absround(hue2rgb(p, q, h - 1/3) * 255);
+		this._red = Color.absround(Color.hue2rgb(p, q, h + 1/3) * 255);
+		this._green = Color.absround(Color.hue2rgb(p, q, h) * 255);
+		this._blue = Color.absround(Color.hue2rgb(p, q, h - 1/3) * 255);
 	};
-	Color.prototype._HSV2RGB = function(){  // http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+	_HSV2RGB(){  // http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
 		var h = this._hue / 360;
 		var s = this._saturation / 100;
 		var v = this._brightness / 100;
@@ -362,56 +368,56 @@ var Color = (function(window){
 				r = v, g = p, b = q;
 				break;
 		}
-		this._red = absround(r * 255);
-		this._green = absround(g * 255);
-		this._blue = absround(b * 255);
+		this._red = Color.absround(r * 255);
+		this._green = Color.absround(g * 255);
+		this._blue = Color.absround(b * 255);
 	};
-	Color.prototype._INT2HEX = function(){
+	_INT2HEX(){
 		var x = this._decimal.toString(16);
 		x = '000000'.substr(0, 6 - x.length) + x;
 		this._hex = '#' + x.toUpperCase();
 	};
-	Color.prototype._INT2RGB = function(){
+	_INT2RGB(){
 		this._red = this._decimal >> 16;
 		this._green = (this._decimal >> 8) & 0xFF;
 		this._blue = this._decimal & 0xFF;
 	};
-	Color.prototype._HEX2INT = function(){
+	_HEX2INT(){
 		this._decimal = parseInt(this._hex, 16);
 	};
-	Color.prototype._RGB2INT = function(){
+	_RGB2INT(){
 		this._decimal = (this._red << 16 | (this._green << 8) & 0xffff | this._blue);
 	};
 
 
-	Color.prototype._RGBUpdated = function(){
+	_RGBUpdated(){
 		this._RGB2INT();  // populate INT values
 		this._RGB2HSL();  // populate HSL values
 		this._INT2HEX();  // populate HEX values
 	};
-	Color.prototype._HSLUpdated = function(){
+	_HSLUpdated(){
 		this._HSL2RGB();  // populate RGB values
 		this._RGB2INT();  // populate INT values
 		this._INT2HEX();  // populate HEX values
 	};
-	Color.prototype._HSVUpdated = function(){
+	_HSVUpdated(){
 		this._HSV2RGB();  // populate RGB values
 		this._RGB2INT();  // populate INT values
 		this._INT2HEX();  // populate HEX values
 	};
-	Color.prototype._HEXUpdated = function(){
+	_HEXUpdated(){
 		this._HEX2INT();  // populate INT values
 		this._INT2RGB();  // populate RGB values
 		this._RGB2HSL();  // populate HSL values
 	};
-	Color.prototype._INTUpdated = function(){
+	_INTUpdated(){
 		this._INT2RGB();  // populate RGB values
 		this._RGB2HSL();  // populate HSL values
 		this._INT2HEX();  // populate HEX values
 	};
 
-	Color.prototype._broadcastUpdate = function(){
-		this.broadcast(Event.UPDATED);
+	_broadcastUpdate(){
+		this.broadcast(Color.Events.UPDATED);
 	};
 
 	/**
@@ -423,8 +429,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.decimal(123456);
 	*/
-	Color.prototype.decimal = function(value){
-		return this._handle('_decimal', value, Events.INT_UPDATED);
+	decimal(value?: number){
+		return this._handle('_decimal', value, Color.Events.INT_UPDATED);
 	};
 
 	/**
@@ -437,8 +443,8 @@ var Color = (function(window){
 	* color.hex('#FF9900');
 	* color.hex('#CCC');
 	*/
-	Color.prototype.hex = function(value){
-		return this._handle('_hex', value, Events.HEX_UPDATED);
+	hex(value?: number) : string{
+		return this._handle('_hex', value, Color.Events.HEX_UPDATED);
 	};
 
 	/**
@@ -450,8 +456,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.red(125);
 	*/
-	Color.prototype.red = function(value){
-		return this._handle('_red', value, Events.RGB_UPDATED);
+	red(value?: number) : number{
+		return this._handle('_red', value, Color.Events.RGB_UPDATED);
 	};
 	/**
 	* Set the green component value of the color, updates all other components, and dispatches Event.UPDATED
@@ -462,8 +468,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.green(125);
 	*/
-	Color.prototype.green = function(value){
-		return this._handle('_green', value, Events.RGB_UPDATED);
+	green(value?: number) : number{
+		return this._handle('_green', value, Color.Events.RGB_UPDATED);
 	};
 	/**
 	* Set the blue component value of the color, updates all other components, and dispatches Event.UPDATED
@@ -474,8 +480,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.blue(125);
 	*/
-	Color.prototype.blue = function(value){
-		return this._handle('_blue', value, Events.RGB_UPDATED);
+	blue(value?: number) : number{
+		return this._handle('_blue', value, Color.Events.RGB_UPDATED);
 	};
 
 	/**
@@ -487,8 +493,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.hue(280);
 	*/
-	Color.prototype.hue = function(value){
-		return this._handle('_hue', value, Events.HSL_UPDATED);
+	hue(value?: number) : number{
+		return this._handle('_hue', value, Color.Events.HSL_UPDATED);
 	};
 	
 	/**
@@ -500,8 +506,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.saturation(280);
 	*/
-	Color.prototype.saturation = function(value){
-		return this._handle('_saturation', value, Events.HSL_UPDATED);
+	saturation(value?: number) : number{
+		return this._handle('_saturation', value, Color.Events.HSL_UPDATED);
 	};
 	
 	/**
@@ -513,8 +519,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.lightness(80);
 	*/	
-	Color.prototype.lightness = function(value){
-		return this._handle('_lightness', value, Events.HSL_UPDATED);
+	lightness(value?: number) : number{
+		return this._handle('_lightness', value, Color.Events.HSL_UPDATED);
 	};	
 	
 	/**
@@ -526,8 +532,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.brightness(80);
 	*/
-	Color.prototype.brightness = function(value){
-		return this._handle('_brightness', value, Events.HSV_UPDATED);
+	brightness(value?: number) : number{
+		return this._handle('_brightness', value, Color.Events.HSV_UPDATED);
 	};
 
 	/**
@@ -539,24 +545,24 @@ var Color = (function(window){
 	* var color = new Color();
 	* color.alpha(0.5);
 	*/
-	Color.prototype.alpha = function(value){
+	alpha(value?: number) : number{
 		return this._handle('_alpha', value);
 	};
 
 	
-	Color.prototype._handle = function(prop, value, event){
-		if(typeof this[prop] != 'undefined'){
+	_handle(prop : string, value?: number, event?: string) : any{
+		if(typeof (this as any)[prop] != 'undefined'){
 			if(typeof value != 'undefined'){
-				if(value != this[prop]){
-					this[prop] = value;
+				if(value != (this as any)[prop]){
+					(this as any)[prop] = value;
 					if(event){
 						this.broadcast(event);
 					};
 				};
-				this.broadcast(Events.UPDATED);
+				this.broadcast(Color.Events.UPDATED);
 			};
 		};
-		return this[prop];
+		return (this as any)[prop];
 	};
 	
 	/**
@@ -567,7 +573,7 @@ var Color = (function(window){
 	* var color = new Color();
 	* element.style.backgroundColor = color.getHex();
 	*/
-	Color.prototype.getHex = function(){
+	getHex(){
 		return this._hex;
 	};
 	/**
@@ -578,8 +584,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* element.style.backgroundColor = color.getRGB();
 	*/
-	Color.prototype.getRGB = function(){
-		var components = [absround(this._red), absround(this._green), absround(this._blue)];
+	getRGB(){
+		var components = [Color.absround(this._red), Color.absround(this._green), Color.absround(this._blue)];
 		return 'rgb(' + components.join(', ') + ')';
 	};
 	/**
@@ -590,8 +596,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* element.style.backgroundColor = color.getPRGB();
 	*/
-	Color.prototype.getPRGB = function(){
-		var components = [absround(100 * this._red / 255) + '%', absround(100 * this._green / 255) + '%', absround(100 * this._blue / 255) + '%'];
+	getPRGB(){
+		var components = [Color.absround(100 * this._red / 255) + '%', Color.absround(100 * this._green / 255) + '%', Color.absround(100 * this._blue / 255) + '%'];
 		return 'rgb(' + components.join(', ') + ')';
 	};
 	/**
@@ -602,8 +608,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* element.style.backgroundColor = color.getRGBA();
 	*/
-	Color.prototype.getRGBA = function(){
-		var components = [absround(this._red), absround(this._green), absround(this._blue), this._alpha];
+	getRGBA(){
+		var components = [Color.absround(this._red), Color.absround(this._green), Color.absround(this._blue), this._alpha];
 		return 'rgba(' + components.join(', ') + ')';
 	};
 	/**
@@ -614,8 +620,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* element.style.backgroundColor = color.getPRGBA();
 	*/
-	Color.prototype.getPRGBA = function(){
-		var components = [absround(100 * this._red / 255) + '%', absround(100 * this._green / 255) + '%', absround(100 * this._blue / 255) + '%', this._alpha];
+	getPRGBA(){
+		var components = [Color.absround(100 * this._red / 255) + '%', Color.absround(100 * this._green / 255) + '%', Color.absround(100 * this._blue / 255) + '%', this._alpha];
 		return 'rgba(' + components.join(', ') + ')';
 	};
 	/**
@@ -626,8 +632,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* element.style.backgroundColor = color.getHSL();
 	*/
-	Color.prototype.getHSL = function(){
-		var components = [absround(this._hue), absround(this._saturation) + '%', absround(this._lightness) + '%'];
+	getHSL(){
+		var components = [Color.absround(this._hue), Color.absround(this._saturation) + '%', Color.absround(this._lightness) + '%'];
 		return 'hsl(' + components.join(', ') + ')';
 	};
 	/**
@@ -638,8 +644,8 @@ var Color = (function(window){
 	* var color = new Color();
 	* element.style.backgroundColor = color.getHSLA();
 	*/
-	Color.prototype.getHSLA = function(){
-		var components = [absround(this._hue), absround(this._saturation) + '%', absround(this._lightness) + '%', this._alpha];
+	getHSLA(){
+		var components = [Color.absround(this._hue), Color.absround(this._saturation) + '%', Color.absround(this._lightness) + '%', this._alpha];
 		return 'hsla(' + components.join(', ') + ')';
 	};
 
@@ -662,7 +668,7 @@ var Color = (function(window){
 	* var color = new Color('#FF9900');
 	* console.log(color.format('red=%r%, green=%g%, blue=%b%));
 	*/
-	Color.prototype.format = function(string){
+	format(string: string){
 		var tokens = {
 			r : this._red,
 			g : this._green,
@@ -676,7 +682,7 @@ var Color = (function(window){
 			d : this._decimal
 		};
 		for(var token in tokens){
-			string = string.split('%' + token + '%').join(tokens[token]);
+			string = string.split('%' + token + '%').join((tokens as any)[token]);
 		};
 		return string;
 	};
@@ -696,34 +702,34 @@ var Color = (function(window){
 	* element.style.backgroundColor = color;
 	* element.style.color = color;
 	*/
-	Color.prototype.output = 0;
+	output = 0;
 
-	Color.HEX = 0;  // toString returns hex: #ABC123
-	Color.RGB = 1;  // toString returns rgb: rgb(0, 100, 255)
-	Color.PRGB = 2;  // toString returns percent rgb: rgb(0%, 40%, 100%)
-	Color.RGBA = 3;  // toString returns rgba: rgba(0, 100, 255, 0.5)
-	Color.PRGBA = 4;  // toString returns percent rgba: rgba(0%, 40%, 100%, 0.5)
-	Color.HSL = 5;  // toString returns hsl: hsl(360, 50%, 50%)
-	Color.HSLA = 6;  // toString returns hsla: hsla(360, 50%, 50%, 0.5)
-	Color.INT = 7;  // toString returns decimal value
+	static HEX = 0;  // toString returns hex: #ABC123
+	static RGB = 1;  // toString returns rgb: rgb(0, 100, 255)
+	static PRGB = 2;  // toString returns percent rgb: rgb(0%, 40%, 100%)
+	static RGBA = 3;  // toString returns rgba: rgba(0, 100, 255, 0.5)
+	static PRGBA = 4;  // toString returns percent rgba: rgba(0%, 40%, 100%, 0.5)
+	static HSL = 5;  // toString returns hsl: hsl(360, 50%, 50%)
+	static HSLA = 6;  // toString returns hsla: hsla(360, 50%, 50%, 0.5)
+	static INT = 7;  // toString returns decimal value
 
-	Color.prototype.toString = function(){
+	toString(){
 		switch(this.output){
-			case 0 :  // Color.HEX
+			case Color.HEX :
 				return this.getHex();
-			case 1 :  // Color.RGB
+			case Color.RGB :
 				return this.getRGB();
-			case 2 :  // Color.PRGB
+			case Color.PRGB :
 				return this.getPRGB();
-			case 3 :  // Color.RGBA
+			case Color.RGBA :
 				return this.getRGBA();
-			case 4 :  // Color.PRGBA
+			case Color.PRGBA : 
 				return this.getPRGBA();
-			case 5 :  // Color.HSL
+			case Color.HSL :
 				return this.getHSL();
-			case 6 :  // Color.HSLA
+			case Color.HSLA :
 				return this.getHSLA();
-			case 7 :  // Color.INT
+			case  Color.INT :
 				return this._decimal;
 		};
 		return this.getHex();
@@ -738,15 +744,15 @@ var Color = (function(window){
 	* element.style.backgroundColor = color.getRGB();
 	* element.style.color = color.foreground().getRGB();
 	*/
-	Color.prototype.foreground = function(){
+	foreground(){
 		if(this._lightness>50) return new Color("black");
 		return new Color("white");
 	};
 
 	// Event Management
-	Color.prototype._listeners = null;
-	Color.prototype._isSubscribed = function(type){
-		return this._listeners[type] != null;
+	_listeners: Object = {};
+	_isSubscribed(type: string){
+		return this._listeners && (this._listeners as any)[type] != null;
 	};
 	/**
 	* @function
@@ -759,11 +765,11 @@ var Color = (function(window){
 	* });
 	* color.red(255);
 	*/
-	Color.prototype.subscribe = function(type, callback){
+	subscribe(type: string, callback: any){
 		if(!this._isSubscribed(type)) {
-			this._listeners[type] = [];
+			(this._listeners as any)[type] = [];
 		};
-		this._listeners[type].push(callback);
+		(this._listeners as any)[type].push(callback);
 	};
 	
 	/**
@@ -780,11 +786,11 @@ var Color = (function(window){
 	* color.unsubscribe(Color.Event.UPDATED, handler);
 	* color.red(0);
 	*/
-	Color.prototype.unsubscribe = function(type, callback){
+	unsubscribe(type: string, callback: any) : void{
 		if(!this._isSubscribed(type)) {
 			return;
 		};
-		var stack = this._listeners[type];
+		var stack: any = (this._listeners as any)[type];
 		for(var i = 0, l = stack.length; i < l; i++){
 			if(stack[i] === callback){
 				stack.splice(i, 1);
@@ -805,11 +811,11 @@ var Color = (function(window){
 	* color.subscribe('arbitraryEvent', handler);
 	* color.broadcast('arbitraryEvent', ['A', 'B']);
 	*/
-	Color.prototype.broadcast = function(type, params){
+	broadcast(type: string, params?: any[]){
 		if(!this._isSubscribed(type)) {
 			return;
 		}
-		var stack = this._listeners[type];
+		var stack = (this._listeners as any)[type];
 		var l = stack.length;
 		for(var i = 0; i < l; i++) {
 			stack[i].apply(this, params);
@@ -826,7 +832,7 @@ var Color = (function(window){
 	* var color = new Color('#FF9900');
 	* color.tween(2000, '#FFFFFF');
 	*/
-	Color.prototype.tween = function(duration, color){
+	tween(duration: number, color: Color){
 		if(!(color instanceof Color)){
 			color = new Color(color);
 		};
@@ -855,10 +861,10 @@ var Color = (function(window){
 	* var color = new Color('#FF9900');
 	* color.bind(someElement.style, 'backgroundColor');
 	*/
-	Color.prototype.bind = function(object, property){
+	bind(object: object, property: string){
 		var ref = this;
 		this.subscribe('updated', function(){
-			object[property] = ref.toString();
+			(object as any)[property] = ref.toString();
 		});
 	};
 	
@@ -870,8 +876,8 @@ var Color = (function(window){
 	* @example 
 	* var gray = Color.interpolate('#FFFFFF', '#000000', 0.5);
 	*/
-	Color.random = function(){
-		return new Color(absround(Math.random() * 16777215));
+	static random(){
+		return new Color(Color.absround(Math.random() * 16777215));
 	};
 	
 	
@@ -884,23 +890,12 @@ var Color = (function(window){
 	* @example 
 	* var color = Color.bind(someElement.style, 'backgroundColor');
 	*/
-	Color.bind = function(object, property){
-		var color = new Color(object[property]);
+	static bind(object: object, property: string){
+		var color = new Color((object as any)[property]);
 		color.bind(object, property);
 		return color;
-	};
-	
-	Color.Events = Events;
-	
-	if (typeof define === 'function') {
-		define('Color', [], function() {
-			return Color;
-		});
-	};
-	
-	return Color;	
-	
-})(window);
+	};	
+};
 
 	
 	
