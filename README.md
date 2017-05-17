@@ -37,3 +37,7 @@ console.log(color.saturation());</pre>
 which smoothly blends one color to another, and <a target="_blank" href="http://moagrius.github.io/Color/Color.html#bind">.bind</a> that links a Color
 instance with an object (e.g., a DOM element's style property, like background-color or (text) color), so that when the Color instance is mutated,
 the bound object property will also be updated.</p>
+<h2>TypeScript support</h2>
+<p>This library is not a module, so to use it in a TypeScript project, add the following line at the top of the file you want to use it in:</p>
+<pre>/// &lt;reference path="./path-to-color/Color.ts"/&gt; </pre>
+<p>It has been tested to be compatible with all of the following strict compiler options: <pre>--strictNullChecks --noFallthroughCasesInSwitch --noImplicitReturns --noImplicitAny</pre>
