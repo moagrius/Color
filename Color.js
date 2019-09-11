@@ -222,7 +222,7 @@ var Color = (function(window){
 	* @returns Color
 	*/
 	Color.prototype.clone = function(){
-		let c = new Color(this.decimal());
+		var c = new Color(this.decimal());
 		c.alpha(this.alpha());
 		return c;
 	};
